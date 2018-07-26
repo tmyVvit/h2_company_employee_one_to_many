@@ -69,7 +69,7 @@ public class CompanyController {
     public CompanyDTO deleteCompanyById(@PathVariable Long companyID){
         Company company = companyRepository.findById(companyID).orElseThrow(()->new ResourceNotFoundException("company not found"));
         CompanyDTO companyDTO = new CompanyDTO(company);
-        company.getEmployees().stream().forEach(employee -> employeeRepository.delete(employee));
+//        company.getEmployees().stream().forEach(employee -> employeeRepository.delete(employee));
         companyRepository.delete(company);
         return companyDTO;
     }
