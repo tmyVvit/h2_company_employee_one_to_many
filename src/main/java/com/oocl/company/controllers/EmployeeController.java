@@ -1,12 +1,16 @@
 package com.oocl.company.controllers;
 
 import com.oocl.company.controllers.DTO.EmployeeDTO;
+import com.oocl.company.entities.Company;
 import com.oocl.company.entities.Employee;
+import com.oocl.company.exceptions.BadRequestException;
 import com.oocl.company.exceptions.ResourceNotFoundException;
 import com.oocl.company.repositories.CompanyRepository;
 import com.oocl.company.repositories.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
@@ -45,9 +49,17 @@ public class EmployeeController {
 
     @Transactional
     @PostMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Employee saveEmployee(@RequestBody Employee employee){
-        return employeeRepository.save(employee);
+    public EmployeeDTO saveEmployee(@RequestBody Employee employee){
+        return new EmployeeDTO(employeeRepository.save(employee));
     }
 
-
+    @Transactional
+    @PutMapping(path = "/{employeeID}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity updateCompanyById(@PathVariable Long employeeID, @RequestBody Employee employee){
+        Employee emp =  employeeRepository.findById(employeeID).orElseThrow(()-> new BadRequestException("bad request"));
+        employee.setId(employeeID);
+        employee.setCompany(emp.getCompany());
+        employeeRepository.save(employee);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }
