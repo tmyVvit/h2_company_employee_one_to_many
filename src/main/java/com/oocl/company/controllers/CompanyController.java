@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.print.attribute.standard.Media;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -48,8 +49,13 @@ public class CompanyController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-//    @Transactional
-//    @DeleteMapping(path)
+    @Transactional
+    @DeleteMapping(path = "/{companyID}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Company deleteCompanyById(@PathVariable Long companyID){
+        Company company = repositories.findById(companyID).get();
+        repositories.delete(company);
+        return company;
+    }
 
 
 }
