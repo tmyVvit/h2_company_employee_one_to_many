@@ -1,17 +1,14 @@
 package com.oocl.company.entities;
 
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
-
-@Table(name = "company")
+@Table(name = "employee")
 @Entity
-public class Company {
+public class Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,14 +19,12 @@ public class Company {
     @CreatedDate
     private ZonedDateTime create_date = ZonedDateTime.now();
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "company", fetch = FetchType.LAZY)
-    private List<Employee> employees = new ArrayList<>();
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_id")
+    private Company company;
 
-    public Company(){}
-    public Company(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
+    public Employee() { }
 
     public Long getId() {
         return id;
@@ -55,13 +50,15 @@ public class Company {
         this.create_date = create_date;
     }
 
-
-    public List<Employee> getEmployees() {
-        return employees;
+    public Company getCompany() {
+        return company;
     }
 
-    public void setEmployees(List<Employee> employees) {
-        this.employees = employees;
+    public void setCompany(Company company) {
+        this.company = company;
     }
+
+
+
 
 }
