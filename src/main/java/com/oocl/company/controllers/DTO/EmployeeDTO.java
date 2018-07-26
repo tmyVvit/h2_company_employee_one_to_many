@@ -7,12 +7,13 @@ import java.time.ZonedDateTime;
 public class EmployeeDTO {
     private final Long id;
     private final String name;
-    private final Long companyID;
+    private Long companyID;
 
     public EmployeeDTO(Employee employee){
         id = employee.getId();
         name = employee.getName();
-        companyID = employee.getCompany().getId();
+        if(employee.getCompany() != null)
+            companyID = employee.getCompany().getId();
     }
 
     public Long getId() {

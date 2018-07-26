@@ -24,6 +24,7 @@ public class CompanyController {
 
     private CompanyRepository companyRepository;
 
+    @Autowired
     private EmployeeRepository employeeRepository;
 
     @Autowired
@@ -73,5 +74,13 @@ public class CompanyController {
         return companyDTO;
     }
 
-    
+    @Transactional
+    @PatchMapping(path = "/{companyID}/employees", produces = MediaType.APPLICATION_JSON_VALUE)
+    public CompanyDTO addTheEmployeeToTheCompany(@PathVariable Long companyID, @RequestBody Employee employee){
+        Employee emp = employeeRepository.findById(employee.getId()).orElseThrow(()->new ResourceNotFoundException("Employee not found"));
+        Company company = companyRepository.findById(companyID).orElseThrow(()->new ResourceNotFoundException("company not found"));
+        emp.setCompany(company);
+        company.addEmployee(emp);
+        return new CompanyDTO(company);
+    }
 }

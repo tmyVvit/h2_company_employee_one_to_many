@@ -30,6 +30,7 @@ public class EmployeeController {
     @GetMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<EmployeeDTO> getAllEmployees(){
         List<EmployeeDTO> employees = new ArrayList<>();
+//        List<Employee> employees = employeeRepository.findAll();
         employeeRepository.findAll().stream().forEach(employee -> employees.add(new EmployeeDTO(employee)));
         return employees;
     }
