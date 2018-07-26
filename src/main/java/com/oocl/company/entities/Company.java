@@ -67,4 +67,8 @@ public class Company {
     public void addEmployee(Employee emp) {
         this.employees.add(emp);
     }
+
+    public void deleteEmployee(Employee employee) {
+        this.employees.remove(employee);
+    }
 }

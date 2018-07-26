@@ -7,6 +7,7 @@ import com.oocl.company.exceptions.BadRequestException;
 import com.oocl.company.exceptions.ResourceNotFoundException;
 import com.oocl.company.repositories.CompanyRepository;
 import com.oocl.company.repositories.EmployeeRepository;
+import org.aspectj.lang.annotation.DeclareError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -61,5 +62,18 @@ public class EmployeeController {
         employee.setCompany(emp.getCompany());
         employeeRepository.save(employee);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @Transactional
+    @DeleteMapping(path = "/{employeeID}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public EmployeeDTO deleteEmployeeById(@PathVariable Long employeeID){
+        Employee employee = employeeRepository.findById(employeeID).orElseThrow(()->new ResourceNotFoundException("employee not found"));
+        EmployeeDTO employeeDTO = new EmployeeDTO(employee);
+        Company company = employee.getCompany();
+        if(company!= null){
+            company.deleteEmployee(employee);
+        }
+        employeeRepository.delete(employee);
+        return employeeDTO;
     }
 }
