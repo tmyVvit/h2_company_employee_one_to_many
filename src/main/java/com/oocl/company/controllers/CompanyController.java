@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/companies")
@@ -20,12 +21,15 @@ public class CompanyController {
         this.repositories = repositories;
     }
 
-    //@Transactional
-    @PostMapping(path = "")//, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Transactional
+    @PostMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public Company save(@RequestBody Company company){
         return repositories.save(company);
     }
 
-//    @Transactional
-//    @GetMapping(path = "", )
+    @Transactional
+    @GetMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Company> getAllCompany(){
+        return repositories.findAll();
+    }
 }
