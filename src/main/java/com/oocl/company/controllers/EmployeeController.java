@@ -1,14 +1,12 @@
 package com.oocl.company.controllers;
 
 import com.oocl.company.controllers.DTO.EmployeeDTO;
+import com.oocl.company.entities.Employee;
 import com.oocl.company.repositories.CompanyRepository;
 import com.oocl.company.repositories.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -36,5 +34,10 @@ public class EmployeeController {
         return employees;
     }
 
+    @Transactional
+    @PostMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Employee saveEmployee(@RequestBody Employee employee){
+        return employeeRepository.save(employee);
+    }
 
 }

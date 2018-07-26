@@ -3,6 +3,7 @@ package com.oocl.company.controllers;
 
 import com.oocl.company.controllers.DTO.CompanyDTO;
 import com.oocl.company.entities.Company;
+import com.oocl.company.entities.Employee;
 import com.oocl.company.exceptions.BadRequestException;
 import com.oocl.company.exceptions.ResourceNotFoundException;
 import com.oocl.company.repositories.CompanyRepository;
@@ -32,7 +33,7 @@ public class CompanyController {
 
     @Transactional
     @PostMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public CompanyDTO save(@RequestBody Company company){
+    public CompanyDTO saveCompany(@RequestBody Company company){
         company.getEmployees().stream().forEach(employee -> employee.setCompany(company));
         companyRepository.save(company);
         return new CompanyDTO(company);
@@ -72,5 +73,5 @@ public class CompanyController {
         return companyDTO;
     }
 
-
+    
 }

@@ -64,4 +64,7 @@ public class Company {
         this.employees = employees;
     }
 
+    public void addEmployee(Employee emp) {
+        this.employees.add(emp);
+    }
 }
