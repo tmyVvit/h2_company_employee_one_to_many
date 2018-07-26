@@ -2,6 +2,7 @@ package com.oocl.company.controllers;
 
 import com.oocl.company.controllers.DTO.EmployeeDTO;
 import com.oocl.company.entities.Employee;
+import com.oocl.company.exceptions.ResourceNotFoundException;
 import com.oocl.company.repositories.CompanyRepository;
 import com.oocl.company.repositories.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +37,17 @@ public class EmployeeController {
     }
 
     @Transactional
+    @GetMapping(path = "/{employeeID}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public EmployeeDTO getEmployeeById(@PathVariable Long employeeID){
+        Employee employee=  employeeRepository.findById(employeeID).orElseThrow(()->new ResourceNotFoundException("company not found"));
+        return new EmployeeDTO(employee);
+    }
+
+    @Transactional
     @PostMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public Employee saveEmployee(@RequestBody Employee employee){
         return employeeRepository.save(employee);
     }
+
 
 }
